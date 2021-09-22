@@ -9,6 +9,7 @@ import com.example.barclays.accountmanagementsystem.repository.CustomerRepositor
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -128,4 +129,52 @@ public class CustomerService {
         return true;
     }
 
+    public int activeAccounts(int customerId)
+    {
+        Customer customer=customerDetails(customerId);
+        return customer.getAccounts().size();
+    }
+
+    public int latestDebitAmount(int accountNo,int customerId)
+    {
+             Customer customer=customerDetails(customerId);
+             CustomerBankAccount customerBankAccount=bankAccountRepository.getById(accountNo);
+             if(customerBankAccount!=null) {
+                 List<AccountTransactions> accountTransactionsList = customerBankAccount.getAccountTransactions();
+                 Collections.reverse(accountTransactionsList);
+                 for (AccountTransactions accountTransactions : accountTransactionsList) {
+                     if (accountTransactions.getType().equals("Debit")) {
+                         return (int) accountTransactions.getAmount();
+                     }
+                 }
+             }
+
+
+        return 0;
+    }
+
+    public int latestCreditAmount(int accountNo,int customerId)
+    {
+        Customer customer=customerDetails(customerId);
+        CustomerBankAccount customerBankAccount=bankAccountRepository.getById(accountNo);
+
+        List<AccountTransactions> accountTransactionsList=customerBankAccount.getAccountTransactions();
+            Collections.reverse(accountTransactionsList);
+            for(AccountTransactions accountTransactions:accountTransactionsList)
+            {
+                if(accountTransactions.getType().equals("Credit"))
+                {
+                    return (int)accountTransactions.getAmount();
+                }
+            }
+
+
+        return 0;
+    }
+
+    public double balanceAmount (int accountNo)
+    {
+        CustomerBankAccount customerBankAccount=bankAccountRepository.getById(accountNo);
+        return customerBankAccount.getBalanceAmount();
+    }
 }
