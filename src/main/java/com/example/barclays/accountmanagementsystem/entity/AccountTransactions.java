@@ -21,6 +21,15 @@ public class AccountTransactions {
     private String type;
     private String subType;
     private int toAccount;
+    private double amount;
+
+    public double getAmount() {
+        return amount;
+    }
+
+    public void setAmount(double amount) {
+        this.amount = amount;
+    }
 
     public int getTransactionId() {
         return transactionId;

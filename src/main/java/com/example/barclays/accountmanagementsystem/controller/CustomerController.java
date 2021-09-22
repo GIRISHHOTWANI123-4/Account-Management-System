@@ -1,14 +1,11 @@
 package com.example.barclays.accountmanagementsystem.controller;
-
-
 import com.example.barclays.accountmanagementsystem.entity.AccountTransactions;
 import com.example.barclays.accountmanagementsystem.entity.Customer;
 import com.example.barclays.accountmanagementsystem.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 public class CustomerController {
@@ -24,8 +21,36 @@ public class CustomerController {
 
 
     @GetMapping("/mini-statements/{accountNo}/{customerId}")
-    public AccountTransactions accountTransactions(@PathVariable int accountNo,int customerId)
+
+    public List<AccountTransactions> accountTransactions(@PathVariable int accountNo, @PathVariable int customerId)
     {
+//          System.out.println("Account No "+accountNo +"Customer Id ="+customerId);
           return customerService.transactions(accountNo,customerId);
     }
+
+    @PostMapping("/cash-withdrawl/{accountNo}")
+    public boolean withdrawl(@RequestBody AccountTransactions accountTransactions, @PathVariable Integer accountNo)
+    {
+//        System.out.println(accountNo);
+        //using accounttransactions repo save the accountTransactions object
+        //add this accounttransactions in customer-bank account
+        customerService.cashWithDrawl(accountNo, accountTransactions);
+        return true;
+    }
+
+    @PostMapping("/cash-deposit/{accountNo}")
+    public boolean deposit(@RequestBody AccountTransactions accountTransactions,@PathVariable Integer accountNo)
+    {
+        customerService.cashDeposit(accountNo,accountTransactions);
+        return true;
+    }
+
+
+    @PostMapping("/amount-transfer/{accountNo}")
+    public boolean transferAmount(@RequestBody AccountTransactions accountTransactions,@PathVariable Integer accountNo)
+    {
+         customerService.transferAmount(accountNo,accountTransactions);
+         return true;
+    }
+
 }
