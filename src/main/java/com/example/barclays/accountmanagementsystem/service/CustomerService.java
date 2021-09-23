@@ -9,6 +9,7 @@ import com.example.barclays.accountmanagementsystem.repository.CustomerRepositor
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -181,5 +182,21 @@ public class CustomerService {
     {
         CustomerBankAccount customerBankAccount=bankAccountRepository.getById(accountNo);
         return customerBankAccount.getBalanceAmount();
+    }
+
+    public List<Integer> getAccountNumbers(int customerId){
+        List<Integer> accounts = new ArrayList<>();
+        try {Customer customer = customerRepository.findById(customerId).get();
+            for (CustomerBankAccount acc : customer.getAccounts()) {accounts.add(acc.getAccountNo());}
+        }catch (Exception e){}
+        return accounts;
+    }
+
+    public List<Integer> getAccountNumbers(String pancardid){
+        List<Integer> accounts = new ArrayList<>();
+        try {Customer customer = customerRepository.findByPanCardNo(pancardid).get();
+            for (CustomerBankAccount acc : customer.getAccounts()) {accounts.add(acc.getAccountNo());}
+        }catch (Exception e){}
+        return accounts;
     }
 }

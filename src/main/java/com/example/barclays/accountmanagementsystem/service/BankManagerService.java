@@ -26,6 +26,8 @@ public class BankManagerService {
 
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private Mailer mailer;
 
     public ApiResponse findByPanCardNo(String pancardno) {
         Optional<Customer> tempCust = customerRepository.findByPanCardNo(pancardno);
@@ -35,9 +37,13 @@ public class BankManagerService {
     }
 
     public ApiResponse save(Customer customer) {
+
+        System.out.println(customer.getPanCardNo()+customer.getAddress()+customer.getEmail()+customer.getAadharNo()+customer.getDob()+customer.getName());
+
         if (customer.getAadharNo() == 0 || customer.getPanCardNo().length() == 0 || customer.getName().length() == 0 ||
                 customer.getEmail().length() == 0 || customer.getAddress().length() == 0)
             return new ApiResponse(false, "All fields were not filled");
+
         Optional<Customer> optTempCust = customerRepository.findByPanCardNo(customer.getPanCardNo());
         if (optTempCust.isEmpty()) {
             customer = customerRepository.save(customer);
@@ -53,6 +59,10 @@ public class BankManagerService {
             user.setUserId(customerRepository.findByPanCardNo(customer.getPanCardNo()).get().getCustomerId());
             System.out.println(user.getUserId());
             user.setPassword("tempPassword");
+            try{
+                mailer.sendSimpleMessage(customer.getEmail(),"Account created using temp Password","Your customerId is: " +Integer.toString(customer.getCustomerId())+" \nUse this password to log into your account: "+user.getPassword());
+            }catch(Exception e){}
+
             Role role = new Role();
             role.setRoleId(2);
             user.setRole(role);

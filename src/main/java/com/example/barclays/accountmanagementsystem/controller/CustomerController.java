@@ -72,4 +72,14 @@ public class CustomerController {
 
         return customerService.balanceAmount(accountNo);
     }
+
+    @GetMapping("/getaccountnumbers/{customerId}")
+    public List<Integer> getAccountNumbers(@PathVariable int customerId) {
+        return customerService.getAccountNumbers(customerId);
+    }
+
+    @GetMapping("/getaccountnumbersfrompan/{pancardid}")
+    public List<Integer> getAccountNumbers(@PathVariable String pancardid) {
+        return customerService.getAccountNumbers(pancardid);
+    }
 }

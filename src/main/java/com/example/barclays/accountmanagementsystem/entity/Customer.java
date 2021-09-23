@@ -15,25 +15,27 @@ public class Customer {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer customerId;
+    private int customerId;
     private String name;
     private Date dob;
     private String email;
     private String address;
-    private String PanCardNo;
-    private int AadharNo;
+    @Column(name = "pan_card_no")
+    private String panCardNo;
+    @Column(name = "aadhar_no")
+    private int aadharNo;
 
 
     @OneToMany
     @JoinColumn(name="customerId",referencedColumnName = "customerId")
     private List<CustomerBankAccount> accounts;
 
-    public Integer getCustomerId() {
+    public int getCustomerId() {
         return customerId;
     }
 
-    public void setCustomerId(Integer customerId) {
-            this.customerId = customerId;
+    public void setCustomerId(int customerId) {
+        this.customerId = customerId;
     }
 
     public String getName() {
@@ -69,19 +71,19 @@ public class Customer {
     }
 
     public String getPanCardNo() {
-        return PanCardNo;
+        return panCardNo;
     }
 
     public void setPanCardNo(String panCardNo) {
-        PanCardNo = panCardNo;
+        this.panCardNo = panCardNo;
     }
 
     public int getAadharNo() {
-        return AadharNo;
+        return aadharNo;
     }
 
     public void setAadharNo(int aadharNo) {
-        AadharNo = aadharNo;
+        this.aadharNo = aadharNo;
     }
 
     public List<CustomerBankAccount> getAccounts() {
