@@ -29,6 +29,8 @@ public class CustomerController {
 
     @PostMapping("/cash-withdrawl/{accountNo}")
     public boolean withdrawl(@RequestBody AccountTransactions accountTransactions, @PathVariable Integer accountNo) {
+        System.out.println("Account  = "+ accountNo);
+        System.out.println(accountTransactions.getType());
 //        System.out.println(accountNo);
         //using accounttransactions repo save the accountTransactions object
         //add this accounttransactions in customer-bank account
@@ -38,6 +40,7 @@ public class CustomerController {
 
     @PostMapping("/cash-deposit/{accountNo}")
     public boolean deposit(@RequestBody AccountTransactions accountTransactions, @PathVariable Integer accountNo) {
+
         customerService.cashDeposit(accountNo, accountTransactions);
         return true;
     }

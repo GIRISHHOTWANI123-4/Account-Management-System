@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -58,6 +59,8 @@ public class CustomerService {
         double tId=Math.random();
         tId=Math.floor(tId*1000);
         int transactionReferenceNo=(int)tId*100;
+        Date date=new Date();
+        accountTransactions.setDate(date);
         accountTransactions.setTransactionReferenceNo(transactionReferenceNo);
         //actual acount deduct money
         CustomerBankAccount account = bankAccountRepository.getById(accountNo);
@@ -75,6 +78,8 @@ public class CustomerService {
         double tId=Math.random();
         tId=Math.floor(tId*1000);
         int transactionReferenceNo=(int)tId*100;
+        Date date=new Date();
+        accountTransactions.setDate(date);
         accountTransactions.setTransactionReferenceNo(transactionReferenceNo);
         CustomerBankAccount account = bankAccountRepository.getById(accountNo);
         double balanceAmount=account.getBalanceAmount()+accountTransactions.getAmount();
