@@ -91,4 +91,8 @@ public class Customer {
     public void setAccounts(List<CustomerBankAccount> accounts) {
         this.accounts = accounts;
     }
+
+    public void addAccount(CustomerBankAccount customerBankAccount){
+        accounts.add(customerBankAccount);
+    }
 }
